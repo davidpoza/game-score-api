@@ -1,0 +1,28 @@
+{
+  "name": "game-score-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/app.js",
+    "start-dev": "nodemon src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com-davidpoza:davidpoza/game-score-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "celebrate": "^15.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "lowdb": "^3.0.0",
+    "nodemon": "^2.0.13",
+    "typedi": "^0.10.0",
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.5"
+  }
+}
