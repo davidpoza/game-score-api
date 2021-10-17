@@ -6,64 +6,38 @@ const route = Router();
 
 export default (app) => {
   const loggerInstance = Container.get('loggerInstance');
+  const sessionService = Container.get('sessionService');
 
   app.use('/sessions', route);
 
   route.post('/',
     celebrate({
       body: Joi.object({
+        appId: Joi.string().required(),
+        username: Joi.string().required(),
         gameId: Joi.string().required(),
       }),
     }),
     async (req, res, next) => {
-      // const accountService = Container.get('accountService');
-      // const {
-      //   name, number, description, bankId, accessId, accessPassword, settings
-      // } = req.body;
-      // const userId = req.user.id;
-      // try {
-      //   const account = await accountService.create(
-      //     {
-      //       name,
-      //       number,
-      //       description,
-      //       userId,
-      //       bankId,
-      //       accessId,
-      //       accessPassword,
-      //       settings
-      //     }
-      //   );
-      //   res.status(201).json(account);
-      // } catch (err) {
-      //   loggerInstance.error('🔥 error: %o', err);
-      //   if (err.name === 'SequelizeUniqueConstraintError') {
-      //     return res.sendStatus(400);
-      //   }
-      //   return next(err);
-      // }
+      try {
+        const { appId, username, gameId } = req.body;
+        await sessionService.createSession(appId, username, gameId);
+        res.sendStatus(204);
+      } catch (err) {
+        res.status(400).json({ error: err.message });
+      }
     });
 
-
+  // this endpoint will be used to check gameId is not changing during game, to avoid cheating
   route.get('/',
     async (req, res, next) => {
-      // const { id } = req.params;
-      // const userId = req.user.id;
-      // const accountService = Container.get('accountService');
-      // try {
-      //   if (id) {
-      //     const account = await accountService.findById(id, userId);
-      //     if (!account) {
-      //       return res.sendStatus(404);
-      //     }
-      //     return res.status(200).json(account);
-      //   }
-      //   const accounts = await accountService.findAll(userId);
-      //   return res.status(200).json(accounts);
-      // } catch (err) {
-      //   loggerInstance.error('🔥 error: %o', err);
-      //   return next(err);
-      // }
+      try {
+        const { appId, username } = req.query;
+        const session = await sessionService.getSession(appId, username);
+        res.status(200).json(session);
+      } catch (error) {
+        res.status(400).json({ error: err.message });
+      }
     }
   );
 

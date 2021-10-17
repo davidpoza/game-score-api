@@ -21,8 +21,37 @@ export default class ScoreService {
     }
   }
 
-  async createScore() {
+  async createScore(appId, username, gameId) {
+    try {
+      await this.lowdb.read();
+      let scores = this.lowdb.data?.scores?.[appId];
+      let userSession = this.lowdb.data?.sessions?.[appId]?.[username];
+      if (!userSession) {
+        throw new Error('a session must exist in order to create a score');
+        return;
+      }
+      if (userSession?.gameId !== gameId) {
+        throw new Error('gameId does not match');
+        return;
+      }
+      const score = Math.floor((new Date().getTime() - userSession.ts) / 1000);
+      delete this.lowdb.data?.sessions?.[appId]?.[username];
+      scores.push({
+        user: username,
+        score
+      });
+      scores = scores
+        .sort((a, b) => {
+          if (a.score > b.score) return 1;
+          return -1;
+        })
+        .slice(0, 10);
 
+      await this.lowdb.write();
+    } catch(error) {
+      this.logger.error(error);
+      throw error;
+    }
   }
 
 };

@@ -3,14 +3,40 @@
     "phasalverbsmemorygame": [
       {
         "user": "pepe",
+        "score": 2
+      },
+      {
+        "user": "pepe",
         "score": 63
+      },
+      {
+        "user": "pepe",
+        "score": 103
+      },
+      {
+        "user": "pepe",
+        "score": 120
+      },
+      {
+        "user": "pepe",
+        "score": 246
+      },
+      {
+        "user": "pepe",
+        "score": 258
+      },
+      {
+        "user": "pepe",
+        "score": 278
       }
     ]
   },
   "sessions": {
-    "1234": {
-      "ip": "79.147.96.50",
-      "ts": "1634486206"
+    "phasalverbsmemorygame": {
+      "pepe": {
+        "ts": 1634493954177,
+        "gameId": "yyx"
+      }
     }
   }
 }

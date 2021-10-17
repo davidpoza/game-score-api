@@ -8,23 +8,25 @@ export default (app) => {
   const loggerInstance = Container.get('loggerInstance');
   const scoreService = Container.get('scoreService');
 
+
   app.use('/scores', route);
 
   route.post('/',
     celebrate({
       body: Joi.object({
+        appId: Joi.string().required(),
+        username: Joi.string().required(),
         gameId: Joi.string().required(),
       }),
     }),
     async (req, res, next) => {
-      // const { gameid } = req.body;
-      // try {
-      //   const scores = await scoreService.getScores(appId);
-      //   res.status(201).json(scores);
-      // } catch (err) {
-      //   loggerInstance.error('🔥 error: %o', err);
-      //   return next(err);
-      // }
+      try {
+        const { appId, username, gameId } = req.body;
+        await scoreService.createScore(appId, username, gameId);
+        res.sendStatus(204);
+      } catch (err) {
+        res.status(400).json({ error: err.message });
+      }
     });
 
   route.get('/:appId',
