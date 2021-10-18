@@ -15,7 +15,6 @@ RUN pip3 install --no-cache --upgrade pip setuptools
 
 # .env must be at WORKDIR to be found by dotenv package
 RUN git clone https://github.com/davidpoza/game-score-api.git .
-WORKDIR /usr/src/app/api
 COPY .env .
 COPY ./docker/api/start.sh .
 RUN ls -la
