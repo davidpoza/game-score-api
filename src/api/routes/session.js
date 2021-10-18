@@ -34,6 +34,7 @@ export default (app) => {
       try {
         const { appId, username } = req.query;
         const session = await sessionService.getSession(appId, username);
+        if (!session) return res.sendStatus(404);
         res.status(200).json(session);
       } catch (error) {
         res.status(400).json({ error: err.message });
