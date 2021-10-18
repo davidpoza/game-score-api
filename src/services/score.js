@@ -36,17 +36,18 @@ export default class ScoreService {
       }
       const score = Math.floor((new Date().getTime() - userSession.ts) / 1000);
       delete this.lowdb.data?.sessions?.[appId]?.[username];
-      scores.push({
-        user: username,
-        score
-      });
-      scores = scores
+
+      scores
+        .push({
+          user: username,
+          score
+        })
         .sort((a, b) => {
           if (a.score > b.score) return 1;
           return -1;
-        })
-        .slice(0, 10);
+        });
 
+      this.lowdb.data.scores[appId] = scores.slice(0, 10);
       await this.lowdb.write();
     } catch(error) {
       this.logger.error(error);
