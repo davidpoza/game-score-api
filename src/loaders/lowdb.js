@@ -7,7 +7,7 @@ const __dirname = dirname(__filename);
 
 export default class LowdbLoader {
   constructor() {
-    const file = join(__dirname, '../../db.json');
+    const file = join(__dirname, '../../data/db.json');
     const adapter = new JSONFile(file);
     const db = new Low(adapter);
     return db;
