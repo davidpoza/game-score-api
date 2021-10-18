@@ -1,5 +1,10 @@
 import dotenv from 'dotenv';
-const envFound = dotenv.config();
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const envFound = dotenv.config({ path: join(__dirname, '../.env') });
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
