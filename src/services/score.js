@@ -41,7 +41,9 @@ export default class ScoreService {
         .push({
           user: username,
           score
-        })
+        });
+
+      scores
         .sort((a, b) => {
           if (a.score > b.score) return 1;
           return -1;
