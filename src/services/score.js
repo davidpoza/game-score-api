@@ -11,10 +11,20 @@ export default class ScoreService {
     return this;
   }
 
-  async getScores(appId) {
+  async getScores(appId, level) {
     try {
       await this.lowdb.read();
-      return this.lowdb.data?.scores?.[appId];
+      let result = this.lowdb.data?.scores?.[appId];
+      if (level) {
+        result = result
+          .filter((s) => (s?.extra?.level === level))
+      }
+      return result
+        .sort((a, b) => {
+          if (a.score > b.score) return 1;
+          return -1;
+        })
+        .slice(0, 10);
     } catch(error) {
       this.logger.error(error);
       throw error;
@@ -44,13 +54,13 @@ export default class ScoreService {
           extra
         });
 
-      scores
-        .sort((a, b) => {
-          if (a.score > b.score) return 1;
-          return -1;
-        });
+      // scores
+      //   .sort((a, b) => {
+      //     if (a.score > b.score) return 1;
+      //     return -1;
+      //   });
 
-      this.lowdb.data.scores[appId] = scores.slice(0, 10);
+      this.lowdb.data.scores[appId] = scores.slice(0, 300); // limited storage
       await this.lowdb.write();
     } catch(error) {
       this.logger.error(error);

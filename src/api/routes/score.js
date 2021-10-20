@@ -34,9 +34,10 @@ export default (app) => {
     async (req, res, next) => {
     loggerInstance.info(`request from ${req.headers['x-forwarded-for'] || req.socket.remoteAddress}`)
     const { appId } = req.params;
+    const { level } = res.query;
     let scores = null;
     try {
-      scores = await scoreService.getScores(appId);
+      scores = await scoreService.getScores(appId, level);
     } catch(error) {
       loggerInstance.error('🔥 error: %o', err);
       return next(err);
