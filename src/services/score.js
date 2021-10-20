@@ -21,7 +21,7 @@ export default class ScoreService {
     }
   }
 
-  async createScore(appId, username, gameId) {
+  async createScore(appId, username, gameId, extra) {
     try {
       await this.lowdb.read();
       let scores = this.lowdb.data?.scores?.[appId];
@@ -40,7 +40,8 @@ export default class ScoreService {
       scores
         .push({
           user: username,
-          score
+          score,
+          extra
         });
 
       scores

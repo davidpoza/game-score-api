@@ -17,12 +17,13 @@ export default (app) => {
         appId: Joi.string().required(),
         username: Joi.string().required(),
         gameId: Joi.string().required(),
+        extra: Joi.object(),
       }),
     }),
     async (req, res, next) => {
       try {
-        const { appId, username, gameId } = req.body;
-        await scoreService.createScore(appId, username, gameId);
+        const { appId, username, gameId, extra } = req.body;
+        await scoreService.createScore(appId, username, gameId, extra);
         res.sendStatus(204);
       } catch (err) {
         res.status(400).json({ error: err.message });
